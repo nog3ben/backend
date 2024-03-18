@@ -1,16 +1,15 @@
 const { DataTypes } = require("sequelize");
 const database = require("../resources/db_connection.js");
 
-const user = database.define(
-  "usuario",
+const login = database.define(
+  "login",
   {
-    nome: DataTypes.TEXT,
-    email: DataTypes.TEXT,
-    senha: DataTypes.TEXT,
+    usuario_id: DataTypes.INTEGER,
+    token: DataTypes.TEXT,
   },
   {
     freezeTableName: true,
   }
 );
 
-module.exports = user;
+module.exports = login;

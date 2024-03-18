@@ -1,11 +1,11 @@
 const { DataTypes } = require("sequelize");
 const database = require("../resources/db_connection.js");
 
-const user = database.define(
-  "usuario",
+const post = database.define(
+  "postagem",
   {
-    nome: DataTypes.TEXT,
-    email: DataTypes.TEXT,
+    titulo: DataTypes.TEXT,
+    conteudo: DataTypes.TEXT,
     senha: DataTypes.TEXT,
   },
   {
@@ -13,4 +13,4 @@ const user = database.define(
   }
 );
 
-module.exports = user;
+module.exports = post;

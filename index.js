@@ -29,6 +29,6 @@ app.all("*", async (req, res) => {
 
 /** LOOP PRINCIPAL */
 app.listen(9091, () => {
-  console.log("Servido ativo e escutando na porta: 3010");
+  console.log("Servidor ativo e escutando na porta: 9091");
 });
 /** LOOP PRINCIPAL */
