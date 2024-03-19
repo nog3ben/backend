@@ -6,7 +6,6 @@ const post = database.define(
   {
     titulo: DataTypes.TEXT,
     conteudo: DataTypes.TEXT,
-    senha: DataTypes.TEXT,
   },
   {
     freezeTableName: true,
