@@ -4,7 +4,7 @@ const login = require("../models/login.js");
 const openRoutes = ["/login/", "/user/"];
 
 module.exports.tokenValidator = async (req, res, next) => {
-  if (openRoutes.includes(req.path) || req.method == "POST") {
+  if (openRoutes.includes(req.path) && req.method == "POST") {
     return next();
   } else if (!req.header("Authorization")) {
     return res.status(422).json(apiResponse(false, "tokenNotInformed"));
