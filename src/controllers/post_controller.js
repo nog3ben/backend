@@ -1,4 +1,7 @@
 const post = require("../models/post.js");
+const userPost = require("../models/user_post.js");
+const sequelize = require("../resources/db_connection.js");
+
 const { apiResponse } = require("../resources/response.js");
 
 module.exports.index = async (app, req, res) => {
@@ -30,20 +33,47 @@ module.exports.show = async (app, req, res) => {
 };
 
 module.exports.post = async (app, req, res) => {
-  try {
-    const data = await post.create({
-      titulo: req.body.titulo,
-      conteudo: req.body.conteudo,
-    });
+  /** INICIO DE TRANSACTION */
+  const transaction = await sequelize.transaction();
+  /** INICIO DE TRANSACTION */
 
-    if (!data) {
+  try {
+    const data = await post.create(
+      {
+        titulo: req.body.titulo,
+        conteudo: req.body.conteudo,
+      },
+      { transaction: transaction }
+    );
+
+    const postUser = await userPost.create(
+      {
+        usuario_id: req.userId,
+        postagem_id: data.id,
+      },
+      { transaction: transaction }
+    );
+
+    if (!data || !postUser) {
+      /**  VOLTAR TRANSACTIONS */
+      transaction.rollback();
+      /**  VOLTAR TRANSACTIONS */
+
       return res
         .status(400)
         .json(apiResponse(true, "dataStoreUnexpectedError"));
     }
 
+    /** APROVAR TRANSACTION */
+    transaction.commit();
+    /** APROVAR TRANSACTION */
+
     return res.status(200).json(apiResponse(true, "dataStoreSuccess", data));
   } catch (err) {
+    /**  VOLTAR TRANSACTIONS */
+    transaction.rollback();
+    /**  VOLTAR TRANSACTIONS */
+
     return res.status(500).json(apiResponse(false, "dataStoreFailed"));
   }
 };

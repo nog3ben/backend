@@ -12,6 +12,7 @@ module.exports.tokenValidator = async (req, res, next) => {
     });
 
     if (loginToken) {
+      req.userId = loginToken.usuario_id;
       next();
     } else {
       return res.status(422).json(apiResponse(false, "tokenDoesNotExist"));
