@@ -10,6 +10,10 @@ const { apiResponse } = require("./src/resources/response.js");
 const app = express();
 /** INICIALIZADOR DO PACOTE EXPRESS PARA CRIAR API */
 
+/** ADICIONANDO SUPORTE A CROSS-ORIGIN REQUESTS NA API */
+app.use(cors());
+/** ADICIONANDO SUPORTE A CROSS-ORIGIN REQUESTS NA API */
+
 /** ADICIONANDO SUPORTE A JSON EM API */
 app.use(express.json());
 /** ADICIONANDO SUPORTE A JSON EM API */
@@ -17,10 +21,6 @@ app.use(express.json());
 /** ADICIONAN DO MIDDLEWARE QUE VERIFICA OS TOKEN DO USUARIO */
 app.use(tokenValidator);
 /** ADICIONAN DO MIDDLEWARE QUE VERIFICA OS TOKEN DO USUARIO */
-
-/** ADICIONANDO SUPORTE A CROSS-ORIGIN REQUESTS NA API */
-app.use(cors());
-/** ADICIONANDO SUPORTE A CROSS-ORIGIN REQUESTS NA API */
 
 /** MODULO CONSING PARA LER/CARREGAR CLASSES E MODELOS DE OUTROS ARQUIVOS */
 consign({ cwd: "src" }).include("routes").into(app);

@@ -1,9 +1,11 @@
 const { apiResponse } = require("../resources/response.js");
 const login = require("../models/login.js");
 
-const openRoutes = ["/login/", "/user/"];
+const openRoutes = ["/login", "/user"];
 
 module.exports.tokenValidator = async (req, res, next) => {
+  console.log(req.path);
+
   if (openRoutes.includes(req.path) && req.method == "POST") {
     return next();
   } else if (!req.header("Authorization")) {
