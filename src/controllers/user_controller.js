@@ -31,11 +31,8 @@ module.exports.show = async (app, req, res) => {
 
 module.exports.post = async (app, req, res) => {
   try {
-    return res.send(req.body);
-
     const data = await user.create({
-      nome: req.body,
-      nome,
+      nome: req.body.nome,
       email: req.body.email,
       senha: req.body.senha,
     });
@@ -54,16 +51,11 @@ module.exports.post = async (app, req, res) => {
 
 module.exports.put = async (app, req, res) => {
   try {
-    const data = await user.update(
-      {
-        nome: "Teste",
+    const data = await user.update(req.body, {
+      where: {
+        id: req.params.id,
       },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
+    });
 
     if (!data) {
       return res

@@ -1,5 +1,7 @@
 const { apiResponse } = require("../resources/response.js");
 
+const bodyParams = ["nome", "email", "senha"];
+
 module.exports.paramsValidator = (req, res, next) => {
   if (isNaN(req.params.id)) {
     return res.status(422).json(apiResponse(false, "paramsInvalid"));
@@ -9,23 +11,33 @@ module.exports.paramsValidator = (req, res, next) => {
 };
 
 module.exports.bodyValidator = (req, res, next) => {
-  let isEror = false;
+  var isError = false;
+  var responseMessage = "";
   const specialChars = /[!#$%^&*()+\-=\[\]{};':"\\|,<>\/?]+/g;
 
   Object.keys(req.body).map((x) => {
     /** VALIDA CASO VENHAM CARACTERES ESPECIAIS */
-    if (specialChars.test(req.body[x])) {
-      isEror = true;
+    if (bodyParams.length != Object.keys(req.body).length) {
+      isError = true;
+      responseMessage = "paramsAreMissing";
       return;
     }
-    if (!["nome", "email", "senha"].includes(x)) {
-      isEror = true;
+
+    if (!bodyParams.includes(x)) {
+      isError = true;
+      responseMessage = `${x}ParamDidNotExist`;
+      return;
+    }
+
+    if (specialChars.test(req.body[x]) || req.body[x].length == 0) {
+      isError = true;
+      responseMessage = `${x}ParamValueAreInvalid`;
       return;
     }
   });
 
-  if (isEror) {
-    return res.status(200).json(apiResponse(false, "bodyParamsIsInvalid"));
+  if (isError) {
+    return res.status(422).json(apiResponse(false, responseMessage));
   } else {
     next();
   }
