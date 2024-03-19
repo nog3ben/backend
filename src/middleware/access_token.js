@@ -6,10 +6,13 @@ const openRoutes = ["/login", "/user"];
 module.exports.tokenValidator = async (req, res, next) => {
   console.log(req.path);
 
-  if (openRoutes.includes(req.path) && req.method == "POST") {
+  if (
+    (openRoutes.includes(req.path) && req.method == "POST") ||
+    (req.path == "/post" && req.method == "GET")
+  ) {
     return next();
   } else if (!req.header("Authorization")) {
-    return res.status(422).json(apiResponse(false, "tokenNotInformed"));
+    return res.status(200).json(apiResponse(false, "tokenNotInformed"));
   } else {
     const loginToken = await login.findOne({
       where: {
