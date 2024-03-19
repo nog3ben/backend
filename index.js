@@ -2,6 +2,7 @@
 const express = require("express");
 const consign = require("consign");
 const cors = require("cors");
+const { tokenValidator } = require("./src/middleware/access_token.js");
 const { apiResponse } = require("./src/resources/response.js");
 /** IMPORTS  */
 
@@ -12,6 +13,10 @@ const app = express();
 /** ADICIONANDO SUPORTE A JSON EM API */
 app.use(express.json());
 /** ADICIONANDO SUPORTE A JSON EM API */
+
+/** ADICIONAN DO MIDDLEWARE QUE VERIFICA OS TOKEN DO USUARIO */
+app.use(tokenValidator);
+/** ADICIONAN DO MIDDLEWARE QUE VERIFICA OS TOKEN DO USUARIO */
 
 /** ADICIONANDO SUPORTE A CROSS-ORIGIN REQUESTS NA API */
 app.use(cors());
