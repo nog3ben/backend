@@ -1,8 +1,12 @@
 const { apiResponse } = require("../resources/response.js");
 const login = require("../models/login.js");
 
+const openRoutes = ["/login/"];
+
 module.exports.tokenValidator = async (req, res, next) => {
-  if (!req.header("Authorization")) {
+  if (openRoutes.includes(req.path)) {
+    return next();
+  } else if (!req.header("Authorization")) {
     return res.status(422).json(apiResponse(false, "tokenNotInformed"));
   } else {
     const loginToken = await login.findOne({
